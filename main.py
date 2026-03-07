@@ -15,8 +15,10 @@ PLAYER_MARGIN = 30
 stud = 5
 block_size = 17 * stud
 
-hover_sound = pygame.mixer.Sound("assets/sounds/hover.wav")
-move_sound = pygame.mixer.Sound("assets/sounds/pawn_move.wav")
+sound = "assets/sounds"
+
+hover_sound = pygame.mixer.Sound(f"{sound}/hover.wav")
+move_sound = pygame.mixer.Sound(f"{sound}/pawn_move.wav")
 was_hovering = False
 
 play_button_img = "assets/main_menu/play_button.png"

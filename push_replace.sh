@@ -1,7 +1,7 @@
 # ./push_replace.sh https://github.com/eknooreden/Ludo-Retro-Game-Jam.git
 
 REPO_URL=$1
-COMMIT_MSG=${2:-"Auto replace repo"}
+COMMIT_MSG=${2:-"New Version"}
 
 echo "Initializing repo..."
 
