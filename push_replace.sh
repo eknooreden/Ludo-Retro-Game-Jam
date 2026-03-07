@@ -25,4 +25,4 @@ git branch -M main
 echo "Force pushing to GitHub..."
 git push -f origin main
 
-echo "Done 🚀 Repo replaced."
+echo "Done; Repo replaced."
