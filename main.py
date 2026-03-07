@@ -47,9 +47,15 @@ game_title_img = "assets/main_menu/title.png"
 game_title = transform.scale(image.load(game_title_img), (300, 180))
 game_title_rect = game_title.get_rect(center=(SCREEN_WIDTH//2, 150))
 
-player_img = "assets/game/player/player_red.png"
+player = "assets/game/player"
+player_red_img = f"{player}/player_red.png"
+player_green_img = f"{player}/player_green.png"
+player_blue_img = f"{player}/player_blue.png"
+player_yellow_img = f"{player}/player_yellow.png"
+player_colors = [player_red_img, player_green_img, player_blue_img, player_yellow_img]
+chosen_player_color = rdm.choice(player_colors)
 player_base_w, player_base_h = 15 * stud, 15 * stud
-player_src = pygame.transform.scale(pygame.image.load(player_img).convert_alpha(), (player_base_w, player_base_h))
+player_src = pygame.transform.scale(pygame.image.load(chosen_player_color).convert_alpha(), (player_base_w, player_base_h))
 
 button_current_scale = 1.0
 button_alpha = 255
