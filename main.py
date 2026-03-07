@@ -6,7 +6,7 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Smooth Movement")
+pygame.display.set_caption("Ludo Adventures")
 
 screen_color = (255, 255, 255)
 
@@ -15,9 +15,9 @@ PLAYER_MARGIN = 30
 stud = 5
 block_size = 10 * stud
 
-player_size = (10 * stud, 10 * stud)
+player_size = (15 * stud, 15 * stud)
 
-player_img = "assets/player.png"
+player_img = "assets/game/player.png"
 player = pygame.transform.scale(
     pygame.image.load(player_img).convert_alpha(),
     player_size
@@ -25,11 +25,10 @@ player = pygame.transform.scale(
 
 clock = pygame.time.Clock()
 
-p_x = 0.0
-p_y = 0.0
+player_rect = player.get_rect(topleft=(PLAYER_MARGIN, PLAYER_MARGIN))
 
-target_x = 0.0
-target_y = 0.0
+target_x = float(player_rect.x)
+target_y = float(player_rect.y)
 
 speed = 250
 
@@ -42,7 +41,7 @@ while run:
             run = False
 
         elif event.type == pygame.KEYDOWN:
-            if p_x == target_x and p_y == target_y:
+            if player_rect.x == round(target_x) and player_rect.y == round(target_y):
                 if event.key == pygame.K_RIGHT:
                     target_x += block_size
                 elif event.key == pygame.K_LEFT:
@@ -52,30 +51,41 @@ while run:
                 elif event.key == pygame.K_DOWN:
                     target_y += block_size
 
-                target_x = max(0, min(target_x, SCREEN_WIDTH - player_size[0]))
-                target_y = max(0, min(target_y, SCREEN_HEIGHT - player_size[1]))
+                target_x = max(
+                    PLAYER_MARGIN,
+                    min(target_x, SCREEN_WIDTH - player_rect.width - PLAYER_MARGIN)
+                )
+                target_y = max(
+                    PLAYER_MARGIN,
+                    min(target_y, SCREEN_HEIGHT - player_rect.height - PLAYER_MARGIN)
+                )
 
+    current_x = float(player_rect.x)
+    current_y = float(player_rect.y)
 
-    if p_x < target_x:
-        p_x += speed * dt
-        if p_x > target_x:
-            p_x = target_x
-    elif p_x > target_x:
-        p_x -= speed * dt
-        if p_x < target_x:
-            p_x = target_x
+    if current_x < target_x:
+        current_x += speed * dt
+        if current_x > target_x:
+            current_x = target_x
+    elif current_x > target_x:
+        current_x -= speed * dt
+        if current_x < target_x:
+            current_x = target_x
 
-    if p_y < target_y:
-        p_y += speed * dt
-        if p_y > target_y:
-            p_y = target_y
-    elif p_y > target_y:
-        p_y -= speed * dt
-        if p_y < target_y:
-            p_y = target_y
+    if current_y < target_y:
+        current_y += speed * dt
+        if current_y > target_y:
+            current_y = target_y
+    elif current_y > target_y:
+        current_y -= speed * dt
+        if current_y < target_y:
+            current_y = target_y
+
+    player_rect.x = round(current_x)
+    player_rect.y = round(current_y)
 
     screen.fill(screen_color)
-    screen.blit(player, (round(p_x), round(p_y)))
+    screen.blit(player, player_rect)
     pygame.display.update()
 
 pygame.quit()
