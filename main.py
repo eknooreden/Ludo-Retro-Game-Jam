@@ -55,7 +55,7 @@ game_title_rect = game_title.get_rect(center=(SCREEN_WIDTH//2, 150))
 
 background_art = transform.scale(
     image.load("assets/main_menu/background_art.png"),
-    (SCREEN_WIDTH, SCREEN_HEIGHT)
+    (SCREEN_WIDTH+200, SCREEN_HEIGHT+200)
 )
 bga_rect = background_art.get_rect()
 
@@ -93,11 +93,18 @@ while run:
     scale = min(window_w / SCREEN_WIDTH, window_h / SCREEN_HEIGHT)
     offset_x = (window_w - (SCREEN_WIDTH * scale)) // 2
     offset_y = (window_h - (SCREEN_HEIGHT * scale)) // 2
-    
+
     raw_mouse_pos = pygame.mouse.get_pos()
     mx = (raw_mouse_pos[0] - offset_x) / scale
     my = (raw_mouse_pos[1] - offset_y) / scale
     mouse_pos = (mx, my)
+
+    PARALLAX_STRENGTH = 20
+    center_x = SCREEN_WIDTH/2
+    center_y = SCREEN_HEIGHT/2
+    offsetpx = (mouse_pos[0] - center_x)/center_x
+    offsetpy = (mouse_pos[1] - center_y)/center_y
+    
 
     is_hovering_btn = pygame.Rect(SCREEN_WIDTH//2-145, SCREEN_HEIGHT//2-50, 290, 100).collidepoint(mouse_pos) and not game_started
     is_hovering_player = player_rect.collidepoint(mouse_pos) and game_started
@@ -201,7 +208,15 @@ while run:
         s_btn = pygame.transform.scale(play_button_src, (int(290*button_current_scale), int(100*button_current_scale)))
         r_btn = pygame.transform.rotate(s_btn, math.sin(time_ms * 0.005) * 3)
         r_btn.set_alpha(button_alpha)
-        game_canvas.blit(background_art, bga_rect)
+
+        bg_rect = background_art.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+
+        parallax_x = -offsetpx * PARALLAX_STRENGTH
+        parallax_y = -offsetpy * PARALLAX_STRENGTH
+        bg_rect.x += parallax_x
+        bg_rect.y += parallax_y
+
+        game_canvas.blit(background_art, bg_rect)
         game_canvas.blit(r_btn, r_btn.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2)))
         game_canvas.blit(game_title, game_title_rect)
 
