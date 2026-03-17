@@ -1,5 +1,9 @@
 # ./pull_replace.sh https://github.com/eknooreden/Ludo-Retro-Game-Jam.git
 
+#================================
+# DOESN'T WORK AT THE MOMENT
+#================================
+
 REPO_URL=$1
 
 echo "Initializing repo..."
