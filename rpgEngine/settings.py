@@ -19,11 +19,11 @@ TILESIZE = 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
-WALL_IMG = 'tileTest.png'
+WALL_IMG = 'assets/rpg/map/tileTest.png'
 
 #Player Setting
 PLAYER_SPEED = 200
-PLAYER_IMG = 'playerTest.png'
+PLAYER_IMG = 'assets/rpg/player/playerTest.png'
 
 #Mob Setting
-MOB_IMG = 'enemyTest.png'
+MOB_IMG = 'assets/rpg/enemies/enemyTest.png'
