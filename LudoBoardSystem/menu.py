@@ -1,32 +1,49 @@
 import math
 import pygame
 
-from settings import SCREEN_WIDTH, SCREEN_HEIGHT
-from helpers import smooth_approach, draw_shadowed_blit
-
+from LudoBoardSystem.settings import SCREEN_WIDTH, SCREEN_HEIGHT
+from LudoBoardSystem.helpers import smooth_approach, draw_shadowed_blit
 
 class MainMenu:
     def __init__(self, assets):
         self.assets = assets
-        self.button_current_scale = 1.0
-        self.button_alpha = 255
 
         self.play_button = assets.play_button
-        self.button_base_w, self.button_base_h = self.play_button.get_size()
+        self.adventure_button = assets.adventure_button
 
-        self.btn_center = (SCREEN_WIDTH // 2, 505)
+        self.play_button_scale = 1.0
+        self.adventure_button_scale = 1.0
+        self.button_alpha = 255
 
-    def get_button_rect(self):
-        btn_draw_w = int(self.button_base_w * self.button_current_scale)
-        btn_draw_h = int(self.button_base_h * self.button_current_scale)
-        rect = pygame.Rect(0, 0, btn_draw_w, btn_draw_h)
-        rect.center = self.btn_center
+        self.play_base_w, self.play_base_h = self.play_button.get_size()
+        self.adventure_base_w, self.adventure_base_h = self.adventure_button.get_size()
+
+        self.play_center = (SCREEN_WIDTH // 2, 405)
+        self.adventure_center = (SCREEN_WIDTH // 2, 535)
+
+    def get_play_button_rect(self):
+        w = int(self.play_base_w * self.play_button_scale)
+        h = int(self.play_base_h * self.play_button_scale)
+        rect = pygame.Rect(0, 0, w, h)
+        rect.center = self.play_center
         return rect
 
-    def update(self, dt, hovering):
-        target_scale = 1.03 if hovering else 1.0
-        self.button_current_scale = smooth_approach(
-            self.button_current_scale, target_scale, 10.0, dt
+    def get_adventure_button_rect(self):
+        w = int(self.adventure_base_w * self.adventure_button_scale)
+        h = int(self.adventure_base_h * self.adventure_button_scale)
+        rect = pygame.Rect(0, 0, w, h)
+        rect.center = self.adventure_center
+        return rect
+
+    def update(self, dt, hovering_play, hovering_adventure):
+        play_target = 1.03 if hovering_play else 1.0
+        adventure_target = 1.03 if hovering_adventure else 1.0
+
+        self.play_button_scale = smooth_approach(
+            self.play_button_scale, play_target, 10.0, dt
+        )
+        self.adventure_button_scale = smooth_approach(
+            self.adventure_button_scale, adventure_target, 10.0, dt
         )
 
     def draw(self, surface, time_ms, art_offset_x, art_offset_y):
@@ -48,15 +65,28 @@ class MainMenu:
             shadow_alpha=75
         )
 
-        btn_w = int(self.button_base_w * self.button_current_scale)
-        btn_h = int(self.button_base_h * self.button_current_scale)
-        scaled_btn = pygame.transform.scale(self.play_button, (btn_w, btn_h))
-        scaled_btn.set_alpha(self.button_alpha)
+        play_w = int(self.play_base_w * self.play_button_scale)
+        play_h = int(self.play_base_h * self.play_button_scale)
+        scaled_play = pygame.transform.scale(self.play_button, (play_w, play_h))
+        scaled_play.set_alpha(self.button_alpha)
 
         draw_shadowed_blit(
             surface,
-            scaled_btn,
-            self.btn_center,
+            scaled_play,
+            self.play_center,
+            shadow_offset=(0, 3),
+            shadow_alpha=55
+        )
+
+        adv_w = int(self.adventure_base_w * self.adventure_button_scale)
+        adv_h = int(self.adventure_base_h * self.adventure_button_scale)
+        scaled_adventure = pygame.transform.scale(self.adventure_button, (adv_w, adv_h))
+        scaled_adventure.set_alpha(self.button_alpha)
+
+        draw_shadowed_blit(
+            surface,
+            scaled_adventure,
+            self.adventure_center,
             shadow_offset=(0, 3),
             shadow_alpha=55
         )

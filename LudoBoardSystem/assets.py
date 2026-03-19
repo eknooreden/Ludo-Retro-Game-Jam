@@ -2,8 +2,8 @@ import os
 import random as rdm
 import pygame
 
-from settings import *
-from helpers import safe_load, safe_sound
+from LudoBoardSystem.settings import *
+from LudoBoardSystem.helpers import safe_load, safe_sound
 
 PLAYER_CHOICES = [
     "assets/game/player/player_red.png",
@@ -12,6 +12,7 @@ PLAYER_CHOICES = [
     "assets/game/player/player_yellow.png",
 ]
 player_color = rdm.choice(PLAYER_CHOICES)
+
 
 class Assets:
     def __init__(self, audio_enabled):
@@ -26,6 +27,7 @@ class Assets:
         self.game_bg = None
 
         self.play_button = self.load_play_button()
+        self.adventure_button = self.load_adventure_button()
         self.game_title = safe_load(TITLE_PATH, size=TITLE_SIZE, alpha=True)
 
         art_w = int(SCREEN_WIDTH * ART_ZOOM)
@@ -84,4 +86,12 @@ class Assets:
         return pygame.transform.scale(
             src,
             (int(w * PLAY_BUTTON_SCALE), int(h * PLAY_BUTTON_SCALE))
+        )
+
+    def load_adventure_button(self):
+        src = safe_load(ADVENTURE_BUTTON_PATH, alpha=True)
+        w, h = src.get_size()
+        return pygame.transform.scale(
+            src,
+            (int(w * ADVENTURE_BUTTON_SCALE), int(h * ADVENTURE_BUTTON_SCALE))
         )

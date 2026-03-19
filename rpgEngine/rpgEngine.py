@@ -1,10 +1,11 @@
-
 import pygame as pg
 import sys
 from os import path
-from settings import *
-from sprites import *
-from tilemap import *
+
+from rpgEngine.settings import *
+from rpgEngine.sprites import *
+from rpgEngine.tilemap import *
+
 
 class Game:
     def __init__(self):
@@ -17,37 +18,43 @@ class Game:
 
     def load_data(self):
         game_folder = path.dirname(__file__)
-        img_folder = path.join(game_folder, 'img')
-        full_path = path.join(game_folder, 'map.txt')
-        self.map = Map(full_path)
-        self.player_img = pg.image.load(path.join(img_folder, PLAYER_IMG)).convert_alpha()
-        self.player_img = pg.transform.scale(self.player_img, (TILESIZE, TILESIZE*1.5))
-        self.wall_img = pg.image.load(path.join(img_folder, WALL_IMG)).convert_alpha()
+        project_root = path.dirname(game_folder)
+
+        map_path = path.join(game_folder, "map.txt")
+        self.map = Map(map_path)
+
+        player_path = path.join(project_root, PLAYER_IMG)
+        wall_path = path.join(project_root, WALL_IMG)
+        mob_path = path.join(project_root, MOB_IMG)
+
+        self.player_img = pg.image.load(player_path).convert_alpha()
+        self.player_img = pg.transform.scale(
+            self.player_img, (TILESIZE, int(TILESIZE * 1.5))
+        )
+
+        self.wall_img = pg.image.load(wall_path).convert_alpha()
         self.wall_img = pg.transform.scale(self.wall_img, (TILESIZE, TILESIZE))
-        self.mob_img = pg.image.load(path.join(img_folder, MOB_IMG)).convert_alpha()
+
+        self.mob_img = pg.image.load(mob_path).convert_alpha()
         self.mob_img = pg.transform.scale(self.mob_img, (TILESIZE, TILESIZE))
 
-
     def new(self):
-        # initialize all variables and do all the setup for a new game
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.mobs = pg.sprite.Group()
+
         for row, tiles in enumerate(self.map.data):
             for col, tile in enumerate(tiles):
-                if tile == '1':
+                if tile == "1":
                     Wall(self, col, row)
-                if tile == 'P':
+                if tile == "P":
                     self.player = Player(self, col, row)
-                if tile == 'M':
+                if tile == "M":
                     Mob(self, col, row)
 
-
         self.camera = Camera(self.map.width, self.map.height)
-                
 
     def run(self):
-        # game loop - set self.playing = False to end the game
         self.playing = True
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
@@ -60,7 +67,6 @@ class Game:
         sys.exit()
 
     def update(self):
-        # update portion of the game loop
         self.all_sprites.update()
         self.camera.update(self.player)
 
@@ -74,19 +80,19 @@ class Game:
         pg.display.set_caption("{:.2f}".format(self.clock.get_fps()))
         self.screen.fill(BGCOLOR)
         self.draw_grid()
+
         for sprite in self.all_sprites:
             self.screen.blit(sprite.image, self.camera.apply(sprite))
+
         pg.display.flip()
 
     def events(self):
-        # catch all events here
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.quit()
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
-                
 
     def show_start_screen(self):
         pass
@@ -94,10 +100,15 @@ class Game:
     def show_go_screen(self):
         pass
 
-# create the game object
-g = Game()
-g.show_start_screen()
-while True:
-    g.new()
-    g.run()
-    g.show_go_screen()
+
+def run_game():
+    g = Game()
+    g.show_start_screen()
+    while True:
+        g.new()
+        g.run()
+        g.show_go_screen()
+
+
+if __name__ == "__main__":
+    run_game()

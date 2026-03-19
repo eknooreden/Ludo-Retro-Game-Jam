@@ -17,8 +17,10 @@ ART_PARALLAX_STRENGTH = 15
 BG_ZOOM = 1.30
 ART_ZOOM = 1.06
 
-PLAY_BUTTON_SCALE = 6
-TITLE_SIZE = (470, 313)
+ADVENTURE_BUTTON_SCALE = 3.8 / 1.35
+PLAY_BUTTON_SCALE = 6 / 1.35
+INCR = 7
+TITLE_SIZE = (100 * INCR, 40 * INCR)
 DICE_SIZE = (80, 80)
 
 BOARD_GRID_SIZE = 15
@@ -37,7 +39,9 @@ BOARD_INSET_X = 25
 BOARD_INSET_Y = 25
 
 DICE_PATH = "assets/game/dice"
+
 PLAY_BUTTON_PATH = "assets/main_menu/play_button.png"
+ADVENTURE_BUTTON_PATH = "assets/main_menu/adventure_button.png"
 TITLE_PATH = "assets/main_menu/title.png"
 MENU_ART_PATH = "assets/main_menu/background_art.png"
 

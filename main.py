@@ -14,10 +14,12 @@ BOARD_Y = (SCREEN_HEIGHT - BOARD_SIZE) // 2
 
 CELL = BOARD_SIZE / 15.0
 
+
 def cell_center(col, row):
     x = BOARD_X + (col + 0.5) * CELL
     y = BOARD_Y + (row + 0.5) * CELL
     return (round(x), round(y))
+
 
 def main():
     pygame.init()
@@ -81,17 +83,26 @@ def main():
         art_offset_x = smooth_approach(art_offset_x, target_art_offset_x, 5.0, dt)
         art_offset_y = smooth_approach(art_offset_y, target_art_offset_y, 5.0, dt)
 
-        btn_rect = menu.get_button_rect()
-        is_hovering_btn = (not game_started) and btn_rect.collidepoint(mouse_pos)
+        play_btn_rect = menu.get_play_button_rect()
+        adventure_btn_rect = menu.get_adventure_button_rect()
+
+        is_hovering_play = (not game_started) and play_btn_rect.collidepoint(mouse_pos)
+        is_hovering_adventure = (not game_started) and adventure_btn_rect.collidepoint(mouse_pos)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if is_hovering_btn and not game_started:
-                    game_started = True
-                    assets.load_random_game_bg()
+                if not game_started:
+                    if is_hovering_play:
+                        game_started = True
+                        assets.load_random_game_bg()
+
+                    elif is_hovering_adventure:
+                        from rpgEngine.rpgEngine import run_game
+                        run_game()
+                        return
 
                 elif game_started and not gameplay.move_queue and not gameplay.dice_rolling:
                     clicked_pawn = gameplay.select_pawn_at_mouse(mouse_pos)
@@ -107,11 +118,10 @@ def main():
         game_canvas.blit(current_bg, (bg_draw_x, bg_draw_y))
 
         if not game_started:
-            menu.update(dt, is_hovering_btn)
+            menu.update(dt, is_hovering_play, is_hovering_adventure)
             menu.draw(game_canvas, time_ms, art_offset_x, art_offset_y)
         else:
             if menu.button_alpha > 0:
-                
                 menu.button_alpha = max(0, menu.button_alpha - int(400 * dt))
 
             gameplay.update_dice(dt)

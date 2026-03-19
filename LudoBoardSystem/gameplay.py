@@ -2,9 +2,8 @@ import math
 import random as rdm
 import pygame
 
-from settings import *
-from helpers import clamp, smooth_approach, draw_shadowed_blit
-
+from LudoBoardSystem.settings import *
+from LudoBoardSystem.helpers import clamp, smooth_approach, draw_shadowed_blit
 
 class Gameplay:
     def __init__(self, assets):

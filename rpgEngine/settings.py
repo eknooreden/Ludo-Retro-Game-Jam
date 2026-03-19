@@ -9,8 +9,8 @@ YELLOW = (255, 255, 0)
 BROWN = (75, 75, 105)
 
 # game settings
-WIDTH = 800   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 800  # 16 * 48 or 32 * 24 or 64 * 12
+WIDTH = 800
+HEIGHT = 800
 FPS = 60
 TITLE = "Rpg Engine"
 BGCOLOR = BROWN
@@ -19,11 +19,11 @@ TILESIZE = 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 
-WALL_IMG = 'assets/rpg/map/tileTest.png'
+WALL_IMG = "assets/rpg/map/tileTest.png"
 
-#Player Setting
+# Player settings
 PLAYER_SPEED = 200
-PLAYER_IMG = 'assets/rpg/player/playerTest.png'
+PLAYER_IMG = "assets/rpg/player/playerTest.png"
 
-#Mob Setting
-MOB_IMG = 'assets/rpg/enemies/enemyTest.png'
+# Mob settings
+MOB_IMG = "assets/rpg/enemies/enemyTest.png"
